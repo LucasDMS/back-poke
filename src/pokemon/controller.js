@@ -4,7 +4,9 @@ require("dotenv").config()
 module.exports = {
     async getPokemonByName(req, res) {
         let weakness = [];
-        
+        let arrEvolutionChainUrl = [];
+        let arrEvolutionChain = [];
+
         const { pokemonName } = req.params
 
         const pokemonBase = await fetch(`${process.env.POKE_URL}/pokemon/${pokemonName}`)
@@ -26,9 +28,7 @@ module.exports = {
         const responsePokemonEvolutionChain = await fetch(pokemonSpecie.evolution_chain.url);
         const pokemonEvolutionChain = await responsePokemonEvolutionChain.json();
 
-        let arrEvolutionChainUrl = [];
-        let arrEvolutionChain = [];
-
+        arrEvolutionChainUrl.push(`${process.env.POKE_URL}/pokemon/${pokemonEvolutionChain.chain.species.name}`)
         for(let evolutionChain of  pokemonEvolutionChain.chain.evolves_to){
 
             arrEvolutionChainUrl.push(`${process.env.POKE_URL}/pokemon/${evolutionChain.species.name}`)
